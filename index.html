@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alexander Private Cars — Premium Transportation in Waterloo Region</title>
   <meta name="description" content="Private luxury transportation service in Waterloo, Ontario. Airport transfers to Toronto Pearson, Hamilton, and Waterloo airports. Local trips and special events.">
+  <link rel="icon" type="image/png" href="design/logo/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -52,11 +53,19 @@
     nav.scrolled { border-bottom-color: var(--card-border); }
 
     .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
       font-weight: 700;
       font-size: 1.1rem;
       letter-spacing: 0.04em;
       color: var(--gold);
       text-decoration: none;
+    }
+
+    .nav-brand img {
+      height: 32px;
+      width: auto;
     }
 
     .nav-links { display: flex; gap: 2rem; list-style: none; }
@@ -112,16 +121,9 @@
       pointer-events: none;
     }
 
-    .hero-badge {
-      display: inline-block;
-      padding: 0.4rem 1.2rem;
-      border: 1px solid var(--gold);
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--gold);
+    .hero-logo {
+      width: clamp(280px, 40vw, 420px);
+      height: auto;
       margin-bottom: 2rem;
     }
 
@@ -563,7 +565,7 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#" class="nav-brand">ALEXANDER PRIVATE CARS</a>
+    <a href="#" class="nav-brand"><img src="design/logo/icon.svg" alt="Alexander Private Cars shield logo">ALEXANDER PRIVATE CARS</a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
       <li><a href="#vehicle">Vehicle</a></li>
@@ -579,7 +581,7 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-badge">Waterloo Region</div>
+    <img src="design/logo/logo-primary.svg" alt="Alexander Private Cars" class="hero-logo">
     <h1>Private Transportation<br><span>Done Right</span></h1>
     <p>Premium chauffeured transportation for local trips, airport transfers, and special events in Waterloo, Ontario.</p>
     <div class="hero-actions">
