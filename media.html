@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Kit — Alexander Private Cars</title>
+  <link rel="icon" type="image/png" href="design/logo/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0a;
+      --card: #141414;
+      --card-border: #1f1f1f;
+      --gold: #c8a456;
+      --gold-light: #ddc07a;
+      --text: #f5f5f5;
+      --text-muted: #999;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .nav-brand img { height: 32px; width: auto; }
+
+    .nav-back {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--gold); }
+
+    /* CONTENT */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .page-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .page-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+      font-size: 1.05rem;
+    }
+
+    /* SECTIONS */
+    .asset-section {
+      margin-bottom: 3rem;
+    }
+
+    .asset-section h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .asset-section p.desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ASSET GRID */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .asset-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .asset-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .asset-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      min-height: 140px;
+    }
+
+    .asset-preview.dark-bg { background: var(--bg); }
+    .asset-preview.light-bg { background: #f0f0f0; }
+    .asset-preview.mid-bg { background: #555; }
+
+    .asset-preview img {
+      max-width: 100%;
+      max-height: 100px;
+      object-fit: contain;
+    }
+
+    .asset-info {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .asset-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .asset-meta {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .asset-links {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .asset-links a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .asset-links a:hover { color: var(--gold-light); }
+
+    /* PDF CARD */
+    .pdf-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .pdf-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      transition: border-color 0.3s;
+    }
+
+    .pdf-card:hover { border-color: var(--gold); }
+
+    .pdf-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(200, 164, 86, 0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .pdf-details { flex: 1; }
+
+    .pdf-details .name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .pdf-details .meta {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .pdf-details a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .pdf-details a:hover { color: var(--gold-light); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer span { color: var(--gold); }
+
+    @media (max-width: 768px) {
+      .container { padding: 2rem 1.5rem 4rem; }
+      .asset-grid { grid-template-columns: 1fr; }
+      .pdf-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-brand"><img src="design/logo/icon.svg" alt="Alexander Private Cars shield logo">ALEXANDER PRIVATE CARS</a>
+    <a href="/" class="nav-back">&larr; Back to site</a>
+  </nav>
+
+  <div class="container">
+    <p class="page-label">Media Kit</p>
+    <h1 class="page-title">Brand &amp; Design Assets</h1>
+    <p class="page-subtitle">Download logos, icons, and print-ready business card templates for marketing and brand use.</p>
+
+    <!-- LOGOS -->
+    <div class="asset-section">
+      <h2>Logo</h2>
+      <p class="desc">Primary brand logo with shield icon. Available in SVG (vector) and PNG (raster) formats.</p>
+      <div class="asset-grid">
+
+        <div class="asset-card">
+          <div class="asset-preview dark-bg">
+            <img src="design/logo/logo-primary.svg" alt="Primary logo">
+          </div>
+          <div class="asset-info">
+            <div class="asset-name">Primary Logo</div>
+            <div class="asset-meta">Gold on transparent &mdash; default usage</div>
+            <div class="asset-links">
+              <a href="design/logo/logo-primary.svg" download>SVG</a>
+              <a href="design/logo/logo-primary.png" download>PNG</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="asset-card">
+          <div class="asset-preview light-bg">
+            <img src="design/logo/logo-dark.svg" alt="Dark logo">
+          </div>
+          <div class="asset-info">
+            <div class="asset-name">Dark Logo</div>
+            <div class="asset-meta">Dark on transparent &mdash; for light backgrounds</div>
+            <div class="asset-links">
+              <a href="design/logo/logo-dark.svg" download>SVG</a>
+              <a href="design/logo/logo-dark.png" download>PNG</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="asset-card">
+          <div class="asset-preview dark-bg">
+            <img src="design/logo/logo-light.svg" alt="Light logo">
+          </div>
+          <div class="asset-info">
+            <div class="asset-name">Light Logo</div>
+            <div class="asset-meta">White on transparent &mdash; for dark backgrounds</div>
+            <div class="asset-links">
+              <a href="design/logo/logo-light.svg" download>SVG</a>
+              <a href="design/logo/logo-light.png" download>PNG</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ICON -->
+    <div class="asset-section">
+      <h2>Icon</h2>
+      <p class="desc">Standalone shield icon for favicons, profile images, and compact branding.</p>
+      <div class="asset-grid">
+
+        <div class="asset-card">
+          <div class="asset-preview dark-bg">
+            <img src="design/logo/icon.svg" alt="Shield icon" style="max-height:70px;">
+          </div>
+          <div class="asset-info">
+            <div class="asset-name">Shield Icon</div>
+            <div class="asset-meta">Gold shield with "A" monogram</div>
+            <div class="asset-links">
+              <a href="design/logo/icon.svg" download>SVG</a>
+              <a href="design/logo/icon.png" download>PNG</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BUSINESS CARDS -->
+    <div class="asset-section">
+      <h2>Business Cards</h2>
+      <p class="desc">Print-ready PDFs formatted for Avery 8371 perforated paper (3.5" &times; 2", 10 per sheet) available at Staples.</p>
+      <div class="pdf-list">
+
+        <div class="pdf-card">
+          <div class="pdf-icon">&#128196;</div>
+          <div class="pdf-details">
+            <div class="name">Dark Version</div>
+            <div class="meta">Black card with gold accents</div>
+            <a href="design/business-cards/business-card-dark.pdf" download>Download PDF</a>
+          </div>
+        </div>
+
+        <div class="pdf-card">
+          <div class="pdf-icon">&#128196;</div>
+          <div class="pdf-details">
+            <div class="name">Light Version</div>
+            <div class="meta">White card with gold accents</div>
+            <a href="design/business-cards/business-card-light.pdf" download>Download PDF</a>
+          </div>
+        </div>
+
+        <div class="pdf-card">
+          <div class="pdf-icon">&#128196;</div>
+          <div class="pdf-details">
+            <div class="name">Original Template</div>
+            <div class="meta">Dark template &mdash; original design</div>
+            <a href="design/business-cards/business-card-template.pdf" download>Download PDF</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>&copy; 2026 <span>Alexander Private Cars</span>. Waterloo, Ontario, Canada.</p>
+  </footer>
+
+</body>
+</html>
