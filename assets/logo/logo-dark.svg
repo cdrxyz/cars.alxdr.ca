@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" width="960" height="240">
+  <g transform="translate(10, 10)">
+    <path d="M50 0 L100 20 L100 60 Q100 95 50 100 Q0 95 0 60 L0 20 Z" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+    <path d="M50 8 L92 25 L92 58 Q92 88 50 93 Q8 88 8 58 L8 25 Z" fill="none" stroke="#1a1a1a" stroke-width="0.8" opacity="0.3"/>
+    <text x="50" y="55" text-anchor="middle" font-family="Georgia, serif" font-size="56" font-weight="700" fill="#1a1a1a" dominant-baseline="middle">A</text>
+  </g>
+  <g transform="translate(125, 0)">
+    <text y="42" font-family="Georgia, serif" font-size="28" font-weight="700" fill="#1a1a1a" letter-spacing="0.04em">ALEXANDER</text>
+    <text y="72" font-family="-apple-system, Helvetica, sans-serif" font-size="13" fill="#c8a456" letter-spacing="0.28em" font-weight="500">PRIVATE CARS</text>
+    <line x1="0" y1="82" x2="155" y2="82" stroke="#c8a456" stroke-width="0.6" opacity="0.5"/>
+    <text y="98" font-family="-apple-system, Helvetica, sans-serif" font-size="9" fill="#555" letter-spacing="0.2em">WATERLOO, ONTARIO</text>
+  </g>
+</svg>
