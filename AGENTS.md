@@ -11,3 +11,7 @@ This includes:
 - Adding new sections if new asset categories are introduced under `design/`
 
 The media page serves as a marketing-accessible index of all brand and design assets.
+
+## Git Workflow
+
+Commit and push changes straight to `master`. Do not open pull requests.
