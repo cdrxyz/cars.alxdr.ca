@@ -1,4 +1,4 @@
-# Alexander Private Cars
+# Alexander Car Service
 
 Premium private transportation in Waterloo, Ontario. Website deployed at [cars.alxdr.ca](https://cars.alxdr.ca).
 
