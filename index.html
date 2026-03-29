@@ -714,7 +714,7 @@
           <div class="contact-item-icon">&#9742;</div>
           <div class="contact-item-text">
             <div class="label">Phone</div>
-            <a href="tel:123456CARS">123-456-CARS</a>
+            <a href="tel:+15195778582">(519) 577-8582</a>
           </div>
         </div>
         <div class="contact-item">
@@ -783,7 +783,30 @@
     <p>&copy; 2026 <span>Alexander Private Cars</span>. Waterloo, Ontario, Canada.</p>
   </footer>
 
+  <!-- GEO-RESTRICTION OVERLAY -->
+  <div id="geoBlock" style="display:none;position:fixed;inset:0;z-index:9999;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;">
+    <img src="design/logo/logo-primary.svg" alt="Alexander Private Cars" style="width:200px;margin-bottom:2rem;">
+    <h1 style="font-size:1.5rem;margin-bottom:1rem;">Service Unavailable in Your Region</h1>
+    <p style="color:var(--text-muted);max-width:400px;">Alexander Private Cars operates exclusively in Canada. This website is only available to visitors located in Canada.</p>
+  </div>
+
   <script>
+    // Geo-restriction: only allow visitors from Canada
+    (function() {
+      fetch('https://ipapi.co/json/')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.country_code !== 'CA') {
+            var block = document.getElementById('geoBlock');
+            block.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+          }
+        })
+        .catch(function() {
+          // If geo lookup fails, allow access
+        });
+    })();
+
     // Mobile nav toggle
     const toggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
