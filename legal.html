@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal — Alexander Car Service</title>
+  <link rel="icon" type="image/png" href="design/logo/icon.png?v=3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0a;
+      --card: #141414;
+      --card-border: #1f1f1f;
+      --gold: #c8a456;
+      --gold-light: #ddc07a;
+      --text: #f5f5f5;
+      --text-muted: #999;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .nav-brand img {
+      height: 32px;
+      width: auto;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    main {
+      padding: 7rem 2rem 5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--gold);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 2.5rem 0 1rem;
+      color: var(--gold-light);
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      color: var(--text);
+    }
+
+    ul {
+      margin-bottom: 1.25rem;
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .last-updated {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 3rem;
+    }
+
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    .btn-back {
+      display: inline-block;
+      margin-bottom: 2rem;
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+
+    .btn-back:hover {
+      color: var(--gold-light);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <img src="design/logo/icon.png?v=3" alt="Alexander Car Service">
+      Alexander Car Service
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <a href="index.html" class="btn-back">← Back to Home</a>
+    
+    <h1>Legal</h1>
+    <p class="last-updated">Last updated: April 4, 2026</p>
+
+    <section id="tos">
+      <h2>Terms of Service</h2>
+      <p>Welcome to Alexander Car Service. By booking our transportation services, you agree to the following terms and conditions:</p>
+
+      <h3>1. Services</h3>
+      <p>Alexander Car Service provides premium private transportation within the Waterloo Region and surrounding areas in Ontario, Canada.</p>
+
+      <h3>2. Payment Terms</h3>
+      <p>Payment is due in full upon the completion of the service. We accept the following payment methods:</p>
+      <ul>
+        <li>Credit Cards</li>
+        <li>Cash</li>
+        <li>Interac e-Transfer</li>
+      </ul>
+
+      <h3>3. Cancellation Policy</h3>
+      <p>We understand that plans change. However, to ensure availability for all clients, the following policy applies to pre-scheduled rides:</p>
+      <ul>
+        <li>Cancellations of pre-scheduled rides will incur a fee equal to <strong>50% of the estimated fare</strong>.</li>
+      </ul>
+
+      <h3>4. Insurance & Liability</h3>
+      <p>Alexander Car Service maintains comprehensive commercial insurance that meets or exceeds the requirements and expectations of the Region of Waterloo and the Province of Ontario.</p>
+
+      <h3>5. Governing Law</h3>
+      <p>These terms are governed by and construed in accordance with the laws of the Province of Ontario, Canada.</p>
+    </section>
+
+    <section id="privacy">
+      <h2>Privacy Policy</h2>
+      <p>Your privacy is important to us. This policy describes how we handle your personal information.</p>
+
+      <h3>1. Information We Collect</h3>
+      <p>We collect only the information necessary to provide our services, which may include:</p>
+      <ul>
+        <li>Name</li>
+        <li>Email address</li>
+        <li>Phone number</li>
+        <li>Pickup and destination addresses</li>
+        <li>Trip dates and times</li>
+      </ul>
+
+      <h3>2. How We Use Your Information</h3>
+      <p>The information collected is used exclusively for:</p>
+      <ul>
+        <li>Scheduling and coordinating your transportation.</li>
+        <li>Communicating regarding your booking.</li>
+        <li>Billing and payment processing.</li>
+      </ul>
+
+      <h3>3. Data Sharing</h3>
+      <p>We do not sell, trade, or otherwise transfer your personal information to third parties, except when required by law or to facilitate the delivery of the service you requested.</p>
+
+      <h3>4. Contact Us</h3>
+      <p>If you have any questions regarding these legal terms or your data, please contact us at: <a href="mailto:cars@alxdr.ca" style="color: var(--gold);">cars@alxdr.ca</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Alexander Car Service. Waterloo, Ontario, Canada.</p>
+  </footer>
+
+</body>
+</html>
