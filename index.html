@@ -422,72 +422,34 @@
       background: var(--card);
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      padding: 2.5rem;
+      padding: 0;
+      overflow: hidden;
     }
 
-    .contact-form h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group { margin-bottom: 1.25rem; }
-
-    .form-group label {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      margin-bottom: 0.4rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
+    .contact-form iframe {
       width: 100%;
-      padding: 0.75rem 1rem;
-      background: var(--bg);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      color: var(--text);
-      font-family: inherit;
-      font-size: 0.95rem;
-      transition: border-color 0.2s;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--gold);
-    }
-
-    .form-group textarea { resize: vertical; min-height: 100px; }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .form-error {
-      display: none;
-      color: #e74c3c;
-      font-size: 0.78rem;
-      margin-top: 0.3rem;
-    }
-
-    .form-group.invalid input {
-      border-color: #e74c3c;
-    }
-
-    .form-group.invalid .form-error {
+      min-height: 750px;
+      border: none;
       display: block;
     }
 
-    .form-submit { width: 100%; margin-top: 0.5rem; }
+    @media (max-width: 640px) {
+      .contact-form iframe {
+        min-height: 800px;
+      }
+    }
+
+    /* Legal link styling */
+    footer a.legal-link {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    footer a.legal-link:hover {
+      color: var(--gold-light);
+    }
 
     /* FOOTER */
     footer {
@@ -743,50 +705,14 @@
         </div>
       </div>
       <div class="contact-form">
-        <h3>Send a Message</h3>
-        <form id="contactForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" id="name" name="name" required placeholder="Your name">
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" required placeholder="your@email.com">
-              <span class="form-error" id="emailError">Please enter a valid email address</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="tel" id="phone" name="phone" placeholder="(519) 555-1234">
-            <span class="form-error" id="phoneError">Please enter a valid phone number (10+ digits)</span>
-          </div>
-          <div class="form-group">
-            <label for="service">Service</label>
-            <select id="service" name="service">
-              <option value="">Select a service</option>
-              <option value="Airport Transfer">Airport Transfer</option>
-              <option value="Local Trip">Local Trip</option>
-              <option value="Special Event">Special Event</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" required placeholder="Tell us about your trip — date, time, pickup & destination"></textarea>
-          </div>
-          <button type="submit" class="btn form-submit">Send Message</button>
-        </form>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdrkH2CINrpHTYJafRTxIeD7AMnyYV36CPo_oom6zu941STSA/viewform?embedded=true" width="640" height="1163" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 <span>Alexander Car Service</span>. Waterloo, Ontario, Canada.</p>
-    <p style=\"margin-top: 0.5rem; font-size: 0.8rem;\">
-      <a href=\"legal.html\" style=\"color: var(--text-muted); text-decoration: none; border-bottom: 1px solid var(--card-border);\">Legal</a>
-    </p>
+    <p>&copy; 2026 <span>Alexander Car Service</span>. Waterloo, Ontario, Canada. <a href="legal.html" class="legal-link">Legal</a></p>
   </footer>
 
   <!-- GEO-RESTRICTION OVERLAY -->
@@ -840,87 +766,6 @@
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Validation helpers
-    function validateEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    function validatePhone(phone) {
-      if (!phone) return true; // optional field
-      var digits = phone.replace(/\D/g, '');
-      return digits.length >= 10;
-    }
-
-    function setFieldValid(id, errorId) {
-      document.getElementById(id).parentElement.classList.remove('invalid');
-    }
-
-    function setFieldInvalid(id, errorId) {
-      document.getElementById(id).parentElement.classList.add('invalid');
-    }
-
-    // Live validation on blur
-    document.getElementById('email').addEventListener('blur', function() {
-      if (this.value && !validateEmail(this.value)) {
-        setFieldInvalid('email');
-      } else {
-        setFieldValid('email');
-      }
-    });
-
-    document.getElementById('phone').addEventListener('blur', function() {
-      if (this.value && !validatePhone(this.value)) {
-        setFieldInvalid('phone');
-      } else {
-        setFieldValid('phone');
-      }
-    });
-
-    // Clear errors on input
-    document.getElementById('email').addEventListener('input', function() {
-      setFieldValid('email');
-    });
-
-    document.getElementById('phone').addEventListener('input', function() {
-      setFieldValid('phone');
-    });
-
-    // Contact form → mailto
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      var name = document.getElementById('name').value;
-      var email = document.getElementById('email').value;
-      var phone = document.getElementById('phone').value;
-      var service = document.getElementById('service').value;
-      var message = document.getElementById('message').value;
-
-      var valid = true;
-
-      if (!validateEmail(email)) {
-        setFieldInvalid('email');
-        valid = false;
-      }
-
-      if (!validatePhone(phone)) {
-        setFieldInvalid('phone');
-        valid = false;
-      }
-
-      if (!valid) return;
-
-      var subject = encodeURIComponent(
-        'Ride Request' + (service ? ' — ' + service : '')
-      );
-      var body = encodeURIComponent(
-        'Name: ' + name + '\n' +
-        'Email: ' + email + '\n' +
-        (phone ? 'Phone: ' + phone + '\n' : '') +
-        (service ? 'Service: ' + service + '\n' : '') +
-        '\n' + message
-      );
-
-      window.location.href = 'mailto:cars@alxdr.ca?subject=' + subject + '&body=' + body;
-    });
   </script>
 
 </body>
