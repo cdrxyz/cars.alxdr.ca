@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redeem Your $20 Off — Alexander Car Service</title>
+  <link rel="icon" type="image/png" href="design/logo/icon.png?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0a;
+      --card: #141414;
+      --card-border: #1f1f1f;
+      --gold: #c8a456;
+      --gold-light: #ddc07a;
+      --text: #f5f5f5;
+      --text-muted: #999;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .nav-brand img { height: 32px; width: auto; }
+
+    .nav-back {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--gold); }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .redeem-container {
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .redeem-badge {
+      display: inline-block;
+      background: rgba(200, 164, 86, 0.12);
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+    }
+
+    .redeem-amount {
+      font-size: clamp(3rem, 8vw, 4.5rem);
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .redeem-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .redeem-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .code-display {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .code-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .code-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    }
+
+    .code-missing {
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-style: italic;
+      letter-spacing: 0;
+    }
+
+    /* Redemption form */
+    .redeem-form {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .redeem-form h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .redeem-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--gold);
+      color: #0a0a0a;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .redeem-btn:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .redeem-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Success state */
+    .success-message {
+      display: none;
+      background: rgba(200, 164, 86, 0.08);
+      border: 1px solid rgba(200, 164, 86, 0.25);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .success-message.show { display: block; }
+
+    .success-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .success-message h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 0.35rem;
+    }
+
+    .success-message p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .terms {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      line-height: 1.5;
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer span { color: var(--gold); }
+
+    @media (max-width: 768px) {
+      .redeem-container { padding: 0 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-brand"><img src="design/logo/icon.png?v=2" alt="Alexander Car Service shield logo">ALEXANDER CAR SERVICE</a>
+    <a href="/" class="nav-back">&larr; Back to site</a>
+  </nav>
+
+  <main>
+    <div class="redeem-container">
+      <div class="redeem-badge">Exclusive Offer</div>
+      <div class="redeem-amount">$20 OFF</div>
+      <h1 class="redeem-title">Your First Ride</h1>
+      <p class="redeem-subtitle">Welcome! Enter your details below to claim your discount on your first trip with Alexander Car Service.</p>
+
+      <div class="code-display">
+        <div class="code-label">Your Promo Code</div>
+        <div class="code-value" id="promoCode"><span class="code-missing">No code provided</span></div>
+      </div>
+
+      <div class="redeem-form" id="redeemForm">
+        <h3>Claim Your Discount</h3>
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="(519) 555-0000" required>
+        </div>
+        <button class="redeem-btn" id="redeemBtn" onclick="handleRedeem()">Redeem $20 Off</button>
+      </div>
+
+      <div class="success-message" id="successMessage">
+        <div class="success-icon">&#10003;</div>
+        <h3>Code Redeemed!</h3>
+        <p>Your $20 discount has been applied. We'll be in touch shortly to help you book your first ride. Check your email for confirmation.</p>
+      </div>
+
+      <p class="terms">
+        Valid for new customers only. One code per person. $20 discount applies to your first ride of $50 or more. Cannot be combined with other offers. Code expires 90 days after issue.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 <span>Alexander Car Service</span>. Waterloo, Ontario, Canada.</p>
+  </footer>
+
+  <script>
+    // Read code from URL params
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const codeEl = document.getElementById('promoCode');
+    const btn = document.getElementById('redeemBtn');
+
+    if (code && /^[A-Z0-9]{6,12}$/.test(code)) {
+      codeEl.textContent = code;
+    } else if (code) {
+      codeEl.innerHTML = '<span class="code-missing">Invalid code</span>';
+      btn.disabled = true;
+    } else {
+      btn.disabled = true;
+    }
+
+    function handleRedeem() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+
+      if (!name || !email || !phone) {
+        return;
+      }
+
+      // Email validation
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById('email').style.borderColor = '#e74c3c';
+        return;
+      }
+
+      // Mock redemption — in production this would POST to a backend
+      btn.disabled = true;
+      btn.textContent = 'Redeeming...';
+
+      setTimeout(function() {
+        document.getElementById('redeemForm').style.display = 'none';
+        document.getElementById('successMessage').classList.add('show');
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
