@@ -303,16 +303,20 @@
     }
 
     .vehicle-visual {
-      border-radius: var(--radius);
-      overflow: hidden;
-      min-height: 300px;
+      display: grid;
+      gap: 0.75rem;
     }
 
     .vehicle-visual img {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 16 / 9;
       object-fit: cover;
       display: block;
+      border-radius: var(--radius);
+    }
+
+    .vehicle-visual img:last-child {
+      aspect-ratio: 16 / 7;
     }
 
     /* AIRPORTS */
@@ -517,8 +521,6 @@
         padding: 2rem;
       }
 
-      .vehicle-visual { min-height: 200px; }
-
       .airports-grid { grid-template-columns: 1fr; }
 
       .contact-grid { grid-template-columns: 1fr; }
@@ -612,7 +614,8 @@
         </div>
       </div>
       <div class="vehicle-visual">
-        <img src="images/grand-wagoneer.png" alt="Jeep Grand Wagoneer — luxury SUV for private transportation">
+        <img src="images/grand-wagoneer-cabin.jpg" alt="Jeep Grand Wagoneer premium cabin with spacious seating">
+        <img src="images/grand-wagoneer.png" alt="Black Jeep Grand Wagoneer exterior for private transportation">
       </div>
     </div>
   </section>
