@@ -1,7 +1,7 @@
 // =============================================================================
 // Alexander Car Service — Invoice Generator
 // Triggered by: Passenger Log form submission
-// Flow: Form submit → Fill template → Export PDF → Email to customer → Save to Drive
+// Flow: Form submit → Fill template → Export PDF → Email to customer (if provided) → Save to Drive
 // =============================================================================
 
 var CONFIG = {
@@ -14,10 +14,8 @@ var CONFIG = {
   COMPANY_EMAIL: 'cars@alxdr.ca',
   COMPANY_PHONE: '(519) 577-8582',
   COMPANY_ADDRESS: 'Waterloo, Ontario, Canada',
-  HST_NUMBER: '',  // ← INSERT YOUR HST NUMBER HERE (e.g. 123456789 RT0001)
 
   // --- Invoice Settings ---
-  HST_RATE: 0.13,
   INVOICE_PREFIX: 'ACS',
   CURRENCY: 'CAD'
 };
@@ -38,29 +36,19 @@ function onFormSubmit(e) {
   var customerName   = getFormValue(formValues, 'Customer Name');
   var companyName    = getFormValue(formValues, 'Company Name');
   var customerEmail  = getFormValue(formValues, 'Customer Email');
+  var customerPhone  = getFormValue(formValues, 'Customer Phone');
   var amountCharged  = getFormValue(formValues, 'Amount Charged ($)');
   var distance       = getFormValue(formValues, 'Distance (km)');
   var passengers     = getFormValue(formValues, 'Number of Passengers');
   var paymentTerms   = getFormValue(formValues, 'Payment Terms');
-  var hstIncluded    = getFormValue(formValues, 'HST (13%) Included in Amount?');
   var pickUp         = getFormValue(formValues, 'Pick-up Location');
   var dropOff        = getFormValue(formValues, 'Drop-off Location');
   var notes          = getFormValue(formValues, 'Notes') || '';
 
   // --- Parse amounts ---
-  var subtotal = parseFloat(String(amountCharged).replace(/[^0-9.]/g, '')) || 0;
-  var hstAmount, total;
-
-  if (hstIncluded === 'Yes') {
-    // HST is already included in the amount charged — back-calculate
-    total = subtotal;
-    subtotal = total / (1 + CONFIG.HST_RATE);
-    hstAmount = total - subtotal;
-  } else {
-    // Add HST on top
-    hstAmount = subtotal * CONFIG.HST_RATE;
-    total = subtotal + hstAmount;
-  }
+  // HST is always included in the amount charged — no separate line needed
+  var total = parseFloat(String(amountCharged).replace(/[^0-9.]/g, '')) || 0;
+  var formattedTotal = formatCurrency(total);
 
   // --- Generate invoice number ---
   var invoiceNumber = getNextInvoiceNumber();
@@ -69,11 +57,6 @@ function onFormSubmit(e) {
   var dateObj = tripDate ? new Date(tripDate) : new Date();
   var formattedDate = Utilities.formatDate(dateObj, 'America/Toronto', 'MMMM d, yyyy');
   var dueDate = calculateDueDate(dateObj, paymentTerms);
-
-  // --- Format currency ---
-  var formattedSubtotal = formatCurrency(subtotal);
-  var formattedHst = formatCurrency(hstAmount);
-  var formattedTotal = formatCurrency(total);
 
   // --- Build service description ---
   var serviceLines = [];
@@ -110,24 +93,28 @@ function onFormSubmit(e) {
     '{{date}}': formattedDate,
     '{{due_date}}': dueDate,
     '{{customer_name}}': customerName,
+    '{{customer_phone}}': customerPhone,
     '{{company_name}}': billToName,
     '{{service_description}}': serviceDescription,
-    '{{subtotal}}': formattedSubtotal,
-    '{{hst_amount}}': formattedHst,
     '{{total}}': formattedTotal,
     '{{payment_terms}}': paymentTerms || 'Net 30',
     '{{notes}}': notes,
     '{{company_email}}': CONFIG.COMPANY_EMAIL,
     '{{company_phone}}': CONFIG.COMPANY_PHONE,
-    '{{company_address}}': CONFIG.COMPANY_ADDRESS,
-    '{{hst_number}}': CONFIG.HST_NUMBER
+    '{{company_address}}': CONFIG.COMPANY_ADDRESS
   };
 
   // --- Process template ---
   try {
     var pdfBlob = generateInvoicePDF(replacements, billToLine2, invoiceNumber);
-    sendInvoiceEmail(customerEmail, customerName, companyName, invoiceNumber, pdfBlob);
-    Logger.log('Invoice ' + invoiceNumber + ' sent to ' + customerEmail);
+
+    // Only send email if customer email was provided
+    if (customerEmail) {
+      sendInvoiceEmail(customerEmail, customerName, companyName, invoiceNumber, pdfBlob, customerPhone);
+      Logger.log('Invoice ' + invoiceNumber + ' sent to ' + customerEmail);
+    } else {
+      Logger.log('Invoice ' + invoiceNumber + ' generated (no customer email provided — skipped sending)');
+    }
   } catch (error) {
     Logger.log('Error: ' + error.message);
     // Notify company about the failure
@@ -135,7 +122,8 @@ function onFormSubmit(e) {
       to: CONFIG.COMPANY_EMAIL,
       subject: '\u26A0\uFE0F Invoice Generation Failed \u2014 ' + invoiceNumber,
       body: 'Invoice could not be sent.\n\nError: ' + error.message +
-            '\n\nCustomer: ' + customerName + ' (' + customerEmail + ')' +
+            '\n\nCustomer: ' + customerName +
+            (customerEmail ? ' (' + customerEmail + ')' : '') +
             (companyName ? '\nCompany: ' + companyName : '') +
             '\nInvoice #: ' + invoiceNumber +
             '\n\nPlease process manually.'
@@ -173,6 +161,11 @@ function generateInvoicePDF(replacements, billToLine2, invoiceNumber) {
     body.replaceText('Attn:\\s*', '');
   }
 
+  // Handle empty customer phone — remove the line cleanly
+  if (!replacements['{{customer_phone}}'] || replacements['{{customer_phone}}'].trim() === '') {
+    body.replaceText('{{customer_phone}}', '');
+  }
+
   // Handle empty notes — remove the line cleanly
   if (!replacements['{{notes}}'] || replacements['{{notes}}'].trim() === '') {
     body.replaceText('{{notes}}', '');
@@ -202,7 +195,7 @@ function generateInvoicePDF(replacements, billToLine2, invoiceNumber) {
 // =============================================================================
 // Send invoice email
 // =============================================================================
-function sendInvoiceEmail(customerEmail, customerName, companyName, invoiceNumber, pdfBlob) {
+function sendInvoiceEmail(customerEmail, customerName, companyName, invoiceNumber, pdfBlob, customerPhone) {
   var displayName = companyName || customerName;
   var subject = 'Invoice ' + invoiceNumber + ' \u2014 ' + CONFIG.COMPANY_NAME;
   var body = [
@@ -299,17 +292,17 @@ function getFormValue(values, key) {
 // Manual test — run from Apps Script editor
 // =============================================================================
 function testInvoice() {
-  // Test 1: Invoice WITH company name
+  // Test 1: Invoice WITH company name, email, and phone
   var mockValuesWithCompany = {
     'Trip Date': ['2026-05-18'],
     'Customer Name': ['John Smith'],
     'Company Name': ['Acme Corporation'],
     'Customer Email': ['billing@acmecorp.com'],
+    'Customer Phone': ['(416) 555-0199'],
     'Amount Charged ($)': ['275.00'],
     'Distance (km)': ['85'],
     'Number of Passengers': ['1'],
     'Payment Terms': ['Net 30'],
-    'HST (13%) Included in Amount?': ['No'],
     'Pick-up Location': ['Waterloo, ON'],
     'Drop-off Location': ['Toronto Pearson International Airport'],
     'Notes': ['Round trip — executive sedan service']
@@ -318,18 +311,18 @@ function testInvoice() {
   onFormSubmit(mockEvent);
 }
 
-// Test 2: Invoice WITHOUT company name (personal customer)
+// Test 2: Invoice WITHOUT company name or email (personal customer)
 function testInvoicePersonal() {
   var mockValuesPersonal = {
     'Trip Date': ['2026-05-19'],
     'Customer Name': ['Jane Doe'],
     'Company Name': [''],
-    'Customer Email': ['jane.doe@example.com'],
+    'Customer Email': [''],
+    'Customer Phone': [''],
     'Amount Charged ($)': ['150.00'],
     'Distance (km)': ['45'],
     'Number of Passengers': ['2'],
     'Payment Terms': ['Due on Receipt'],
-    'HST (13%) Included in Amount?': ['Yes'],
     'Pick-up Location': ['Kitchener, ON'],
     'Drop-off Location': ['Hamilton, ON'],
     'Notes': ['']
