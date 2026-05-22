@@ -93,6 +93,7 @@ function onFormSubmit(e) {
     '{{date}}': formattedDate,
     '{{due_date}}': dueDate,
     '{{customer_name}}': customerName,
+    '{{customer_email}}': customerEmail,
     '{{customer_phone}}': customerPhone,
     '{{company_name}}': billToName,
     '{{service_description}}': serviceDescription,
@@ -159,6 +160,11 @@ function generateInvoicePDF(replacements, billToLine2, invoiceNumber) {
   if (!billToLine2) {
     // No company — remove "Attn: " prefix, leaving just the customer name
     body.replaceText('Attn:\\s*', '');
+  }
+
+  // Handle empty customer email — remove the line cleanly
+  if (!replacements['{{customer_email}}'] || replacements['{{customer_email}}'].trim() === '') {
+    body.replaceText('{{customer_email}}', '');
   }
 
   // Handle empty customer phone — remove the line cleanly
