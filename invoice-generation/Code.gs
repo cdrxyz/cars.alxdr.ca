@@ -40,7 +40,6 @@ function onFormSubmit(e) {
   var amountCharged  = getFormValue(formValues, 'Amount Charged ($)');
   var distance       = getFormValue(formValues, 'Distance (km)');
   var passengers     = getFormValue(formValues, 'Number of Passengers');
-  var paymentTerms   = getFormValue(formValues, 'Payment Terms');
   var pickUp         = getFormValue(formValues, 'Pick-up Location');
   var dropOff        = getFormValue(formValues, 'Drop-off Location');
   var notes          = getFormValue(formValues, 'Notes') || '';
@@ -56,7 +55,6 @@ function onFormSubmit(e) {
   // --- Format dates ---
   var dateObj = tripDate ? new Date(tripDate) : new Date();
   var formattedDate = Utilities.formatDate(dateObj, 'America/Toronto', 'MMMM d, yyyy');
-  var dueDate = calculateDueDate(dateObj, paymentTerms);
 
   // --- Build service description ---
   var serviceLines = [];
@@ -76,29 +74,25 @@ function onFormSubmit(e) {
   var serviceDescription = serviceLines.join('\n') || 'Passenger transportation service';
 
   // --- Build Bill To block ---
-  // If Company Name is provided, invoice is addressed: "Company Name / Attn: Customer Name"
-  // If no Company Name, just: "Customer Name"
   var billToName, billToLine2;
   if (companyName) {
-    billToName = companyName;       // {{company_name}} → Company Name
-    billToLine2 = 'Attn: ' + customerName;  // kept separate for template
+    billToName = companyName;
+    billToLine2 = 'Attn: ' + customerName;
   } else {
-    billToName = customerName;      // {{company_name}} → Customer Name
-    billToLine2 = '';               // no Attn line needed
+    billToName = customerName;
+    billToLine2 = '';
   }
 
   // --- Build replacement map ---
   var replacements = {
     '{{invoice_number}}': invoiceNumber,
     '{{date}}': formattedDate,
-    '{{due_date}}': dueDate,
     '{{customer_name}}': customerName,
     '{{customer_email}}': customerEmail,
     '{{customer_phone}}': customerPhone,
     '{{company_name}}': billToName,
     '{{service_description}}': serviceDescription,
     '{{total}}': formattedTotal,
-    '{{payment_terms}}': paymentTerms || 'Net 30',
     '{{notes}}': notes,
     '{{company_email}}': CONFIG.COMPANY_EMAIL,
     '{{company_phone}}': CONFIG.COMPANY_PHONE,
@@ -136,13 +130,11 @@ function onFormSubmit(e) {
 // Generate PDF from template
 // =============================================================================
 function generateInvoicePDF(replacements, billToLine2, invoiceNumber) {
-  // Copy template
   var templateDocId = CONFIG.TEMPLATE_DOC_ID;
   var copyTitle = 'Invoice ' + invoiceNumber;
   var copy = DriveApp.getFileById(templateDocId).makeCopy(copyTitle);
   var copyDocId = copy.getId();
 
-  // Open copy and replace placeholders
   var doc = DocumentApp.openById(copyDocId);
   var body = doc.getBody();
 
@@ -151,14 +143,8 @@ function generateInvoicePDF(replacements, billToLine2, invoiceNumber) {
     body.replaceText(placeholder, replacements[placeholder]);
   }
 
-  // Handle the Bill To section:
-  // Template has: {{company_name}}\nAttn: {{customer_name}}
-  // If companyName was provided: company_name is already replaced, and
-  //   {{customer_name}} is replaced. "Attn:" line stays — perfect.
-  // If no companyName: we need to collapse "Attn: John" into just "John"
-  //   and remove the extra line, so it shows only the customer name.
+  // Handle the Bill To section
   if (!billToLine2) {
-    // No company — remove "Attn: " prefix, leaving just the customer name
     body.replaceText('Attn:\\s*', '');
   }
 
@@ -190,11 +176,6 @@ function generateInvoicePDF(replacements, billToLine2, invoiceNumber) {
   });
 
   var pdfBlob = response.getBlob().setName(copyTitle + '.pdf');
-
-  // Keep the Docs copy in the folder too (useful for re-edits)
-  // Uncomment the next line to delete the Docs copy and keep only the PDF:
-  // DriveApp.getFileById(copyDocId).setTrashed(true);
-
   return pdfBlob;
 }
 
@@ -202,7 +183,6 @@ function generateInvoicePDF(replacements, billToLine2, invoiceNumber) {
 // Send invoice email
 // =============================================================================
 function sendInvoiceEmail(customerEmail, customerName, companyName, invoiceNumber, pdfBlob, customerPhone) {
-  var displayName = companyName || customerName;
   var subject = 'Invoice ' + invoiceNumber + ' \u2014 ' + CONFIG.COMPANY_NAME;
   var body = [
     'Dear ' + customerName + ',',
@@ -269,25 +249,6 @@ function formatCurrency(amount) {
   return '$' + amount.toFixed(2) + ' ' + CONFIG.CURRENCY;
 }
 
-function calculateDueDate(invoiceDate, paymentTerms) {
-  var date = invoiceDate ? new Date(invoiceDate) : new Date();
-  var days;
-
-  switch (paymentTerms) {
-    case 'Net 15': days = 15; break;
-    case 'Net 30': days = 30; break;
-    case 'Due on Receipt': days = 0; break;
-    case 'COD': days = 0; break;
-    default: days = 30;
-  }
-
-  if (days > 0) {
-    date.setDate(date.getDate() + days);
-    return Utilities.formatDate(date, 'America/Toronto', 'MMMM d, yyyy');
-  }
-  return 'Due on Receipt';
-}
-
 function getFormValue(values, key) {
   var val = values[key];
   if (Array.isArray(val)) return val[0] || '';
@@ -298,7 +259,6 @@ function getFormValue(values, key) {
 // Manual test — run from Apps Script editor
 // =============================================================================
 function testInvoice() {
-  // Test 1: Invoice WITH company name, email, and phone
   var mockValuesWithCompany = {
     'Trip Date': ['2026-05-18'],
     'Customer Name': ['John Smith'],
@@ -308,7 +268,6 @@ function testInvoice() {
     'Amount Charged ($)': ['275.00'],
     'Distance (km)': ['85'],
     'Number of Passengers': ['1'],
-    'Payment Terms': ['Net 30'],
     'Pick-up Location': ['Waterloo, ON'],
     'Drop-off Location': ['Toronto Pearson International Airport'],
     'Notes': ['Round trip — executive sedan service']
@@ -317,7 +276,6 @@ function testInvoice() {
   onFormSubmit(mockEvent);
 }
 
-// Test 2: Invoice WITHOUT company name or email (personal customer)
 function testInvoicePersonal() {
   var mockValuesPersonal = {
     'Trip Date': ['2026-05-19'],
@@ -328,7 +286,6 @@ function testInvoicePersonal() {
     'Amount Charged ($)': ['150.00'],
     'Distance (km)': ['45'],
     'Number of Passengers': ['2'],
-    'Payment Terms': ['Due on Receipt'],
     'Pick-up Location': ['Kitchener, ON'],
     'Drop-off Location': ['Hamilton, ON'],
     'Notes': ['']
