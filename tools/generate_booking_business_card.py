@@ -129,9 +129,9 @@ def draw_card(card, x, y, logo, watermark, vehicle, qr_image):
     card.drawImage(watermark, -23, 23, width=116, height=116, mask="auto")
 
     card.drawImage(logo, 13, 99, width=34, height=34, mask="auto")
-    draw_text(card, 54, 116, "ALEXANDER", FONT_HEADING, 24, DARK)
-    draw_text(card, 56, 106, "CAR SERVICE", FONT_BOLD, 7.5, GOLD)
-    draw_text(card, 56, 96, "Private passenger transportation", FONT_REGULAR, 5.6, MUTED)
+    draw_text(card, 51, 115, "ALEXANDER", FONT_HEADING, 26, DARK)
+    draw_text(card, 53, 104, "CAR SERVICE", FONT_BOLD, 9, GOLD)
+    draw_text(card, 53, 93, "Private passenger transportation", FONT_REGULAR, 6.8, MUTED)
 
     card.drawImage(vehicle, 108, 1, width=140, height=81, mask="auto")
 
@@ -143,20 +143,20 @@ def draw_card(card, x, y, logo, watermark, vehicle, qr_image):
     card.roundRect(qr_x - 3, qr_y - 3, qr_size + 6, qr_size + 6, 3, stroke=1, fill=0)
     card.drawImage(qr_image, qr_x, qr_y, width=qr_size, height=qr_size)
     card.setFillColorRGB(1, 1, 1)
-    card.roundRect(qr_x - 3, qr_y - 12, qr_size + 6, 8, 2, stroke=0, fill=1)
-    draw_centered_text(card, qr_x - 2, qr_y - 9, qr_size + 4, "SCAN TO BOOK", FONT_BOLD, 4.8, DARK)
+    card.roundRect(qr_x - 3, qr_y - 13, qr_size + 6, 9, 2, stroke=0, fill=1)
+    draw_centered_text(card, qr_x - 2, qr_y - 10, qr_size + 4, "SCAN TO BOOK", FONT_BOLD, 5.6, DARK)
 
-    draw_text(card, 14, 75, "Nabil Alexander", FONT_BOLD, 10.5, DARK)
-    draw_text(card, 14, 65, "Owner & Chauffeur", FONT_REGULAR, 6, GOLD)
+    draw_text(card, 14, 75, "Nabil Alexander", FONT_BOLD, 12.2, DARK)
+    draw_text(card, 14, 63, "Owner & Chauffeur", FONT_REGULAR, 7.2, GOLD)
 
     card.setStrokeColorRGB(*rgb(GOLD))
     card.setLineWidth(0.6)
-    card.line(14, 58, 110, 58)
+    card.line(14, 56, 105, 56)
 
-    draw_text(card, 14, 47, "(519) 577-8582", FONT_REGULAR, 6.1, DARK)
-    draw_text(card, 14, 37, "cars@alxdr.ca", FONT_REGULAR, 6.1, DARK)
-    draw_text(card, 14, 27, "cars.alxdr.ca", FONT_REGULAR, 6.1, DARK)
-    draw_text(card, 14, 17, "Waterloo, Ontario", FONT_REGULAR, 6.1, DARK)
+    draw_text(card, 14, 45, "(519) 577-8582", FONT_REGULAR, 7.2, DARK)
+    draw_text(card, 14, 34, "cars@alxdr.ca", FONT_REGULAR, 7.2, DARK)
+    draw_text(card, 14, 23, "cars.alxdr.ca", FONT_REGULAR, 7.2, DARK)
+    draw_text(card, 14, 12, "Waterloo, Ontario", FONT_REGULAR, 7.2, DARK)
 
     card.restoreState()
 
